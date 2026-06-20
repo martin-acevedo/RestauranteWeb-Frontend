@@ -1,6 +1,6 @@
 export async function loginApi(payload){
     try{
-        const res = await fetch(`http://localhost:8085/auth/login`,{
+        const res = await fetch(`http://localhost:8090/auth/login`,{
             method:"POST",
             body:JSON.stringify(payload),
             headers:{
@@ -19,7 +19,7 @@ export async function loginApi(payload){
 
 export async function createApi(payload){
     try{
-        const res = await fetch(`http://localhost:8085/auth/create`,{
+        const res = await fetch(`http://localhost:8090/auth/create`,{
             method:"POST",
             body:JSON.stringify(payload),
             headers:{

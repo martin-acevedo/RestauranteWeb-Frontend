@@ -1,6 +1,6 @@
 export async function findAllCategoryApi(token){
     try{
-        const res = await fetch(`http://localhost:8085/category`,{
+        const res = await fetch(`http://localhost:8090/category`,{
             method:"GET",
             headers:{
                 "Content-Type":"application/json",
@@ -19,7 +19,7 @@ export async function findAllCategoryApi(token){
 
 export async function saveCategoryApi(json, token){
     try{
-        const res = await fetch(`http://localhost:8085/category`,{
+        const res = await fetch(`http://localhost:8090/category`,{
             method:"POST",
             body:JSON.stringify(json),
             headers:{

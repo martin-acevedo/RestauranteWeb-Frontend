@@ -7,8 +7,8 @@ import CategoriaPage from './pages/CategoriaPage'
 
 const route = createBrowserRouter([
   {path:'/', element:<LoginPage />},
-  {path:'/menu', element:<ProtectedRoute allowedRoles={["ROLE_ADMIN","ROLE_USER"]}><MenuPage/></ProtectedRoute>},
-  {path:'/categoria', element:<ProtectedRoute allowedRoles={["ROLE_ADMIN","ROLE_USER"]}><CategoriaPage/></ProtectedRoute>},
+  {path:'/menu', element:<ProtectedRoute allowedRoles={["ROLE_Administrador","ROLE_Mesero"]}><MenuPage/></ProtectedRoute>},
+  {path:'/categoria', element:<ProtectedRoute allowedRoles={["ROLE_Administrador","ROLE_Mesero"]}><CategoriaPage/></ProtectedRoute>},
   {path:'/no-autorizado', element:<h3>No tienes permisos para acceder a esta página</h3>}
 
 ])
