@@ -1,0 +1,16 @@
+.mesa-form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.mesa-table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mesa-search-container {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: flex-start;
+}

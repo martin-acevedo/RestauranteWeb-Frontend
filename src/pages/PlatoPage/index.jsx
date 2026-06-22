@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { findAllPlatosApi, savePlatoApi, editPlatoApi, deletePlatoApi } from "../../api/platoApi";
 import { findAllCategoryApi } from "../../api/categoriaApi";
 import { AuthContext } from "../../store/auth-context";
+import { PageHeader, Alert, Card, Input, Select, Textarea, Button, Table, Badge, SearchBar } from "../../components";
+import "./PlatoPage.css";
 
 function PlatoPage() {
     const navigate = useNavigate();
@@ -21,6 +23,7 @@ function PlatoPage() {
     const [editId, setEditId] = useState(null);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
     async function loadData() {
         const platosData = await findAllPlatosApi(token);
@@ -32,7 +35,7 @@ function PlatoPage() {
         if (categoriesData) {
             setCategories(categoriesData);
             if (categoriesData.length > 0 && !idCategoria) {
-                setIdCategoria(categoriesData[0].id);
+                setIdCategoria(categoriesData[0].id.toString());
             }
         }
     }
@@ -81,7 +84,7 @@ function PlatoPage() {
             resetForm();
             loadData();
         } else {
-            setError(res?.message || "Ocurrió un error al guardar el plato");
+            setError(res?.message || "Ocurrió un error al guardar la plato");
         }
     };
 
@@ -127,150 +130,140 @@ function PlatoPage() {
         setSuccess("");
     };
 
+    // Filter platos by search term
+    const filteredPlatos = platos.filter((plato) =>
+        plato.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (plato.descripcion && plato.descripcion.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (plato.nombreCategoria && plato.nombreCategoria.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
     return (
         <div className="app-container">
-            <div className="app-header">
-                <h2 className="app-title">Gestión de Platos</h2>
-                <button className="app-btn app-btn-secondary" onClick={() => navigate('/menu', { replace: true })}>
-                    Volver al Menú
-                </button>
-            </div>
+            <PageHeader
+                title="Gestión de Platos"
+                actions={
+                    <Button variant="secondary" onClick={() => navigate('/menu', { replace: true })}>
+                        Volver al Menú
+                    </Button>
+                }
+            />
 
-            {error && <div className="app-badge app-badge-danger" style={{ marginBottom: "16px", display: "block" }}>{error}</div>}
-            {success && <div className="app-badge app-badge-success" style={{ marginBottom: "16px", display: "block" }}>{success}</div>}
+            <Alert type="danger" message={error} />
+            <Alert type="success" message={success} />
 
-            <div className="app-card">
-                <h3>{editId ? "Editar Plato" : "Nuevo Plato"}</h3>
+            <Card title={editId ? "Editar Plato" : "Nuevo Plato"}>
                 <form onSubmit={handleSubmit}>
                     <div className="form-row">
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="nombrePlato">Nombre del Plato</label>
-                            <input
-                                id="nombrePlato"
-                                className="form-control"
-                                type="text"
-                                placeholder="Ej: Pastel de choclo"
-                                value={nombre}
-                                onChange={(e) => setNombre(e.target.value)}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="precioPlato">Precio ($)</label>
-                            <input
-                                id="precioPlato"
-                                className="form-control"
-                                type="number"
-                                placeholder="Ej: 8500"
-                                value={precio}
-                                onChange={(e) => setPrecio(e.target.value)}
-                            />
-                        </div>
-                    </div>
-
-                    <div className="form-row">
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="categoriaPlato">Categoría</label>
-                            <select
-                                id="categoriaPlato"
-                                className="form-control"
-                                value={idCategoria}
-                                onChange={(e) => setIdCategoria(e.target.value)}
-                            >
-                                <option value="" disabled>Seleccione una categoría</option>
-                                {categories.map((cat) => (
-                                    <option key={cat.id} value={cat.id}>{cat.nombre}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="form-group" style={{ justifyContent: "center" }}>
-                            <label className="form-label" style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-                                <input
-                                    type="checkbox"
-                                    checked={disponible}
-                                    onChange={(e) => setDisponible(e.target.checked)}
-                                    style={{ transform: "scale(1.2)" }}
-                                />
-                                Disponible para el público
-                            </label>
-                        </div>
-                    </div>
-
-                    <div className="form-group">
-                        <label className="form-label" htmlFor="descPlato">Descripción</label>
-                        <textarea
-                            id="descPlato"
-                            className="form-control"
-                            rows="3"
-                            placeholder="Breve descripción de los ingredientes o preparación..."
-                            value={descripcion}
-                            onChange={(e) => setDescripcion(e.target.value)}
+                        <Input
+                            id="nombrePlato"
+                            label="Nombre del Plato"
+                            type="text"
+                            placeholder="Ej: Pastel de choclo"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                        />
+                        <Input
+                            id="precioPlato"
+                            label="Precio ($)"
+                            type="number"
+                            placeholder="Ej: 8500"
+                            value={precio}
+                            onChange={(e) => setPrecio(e.target.value)}
                         />
                     </div>
 
-                    <div style={{ display: "flex", gap: "10px" }}>
-                        <button className="app-btn app-btn-primary" type="submit">
+                    <div className="form-row">
+                        <Select
+                            id="categoriaPlato"
+                            label="Categoría"
+                            value={idCategoria}
+                            onChange={(e) => setIdCategoria(e.target.value)}
+                        >
+                            <option value="" disabled>Seleccione una categoría</option>
+                            {categories.map((cat) => (
+                                <option key={cat.id} value={cat.id}>{cat.nombre}</option>
+                            ))}
+                        </Select>
+                        <div className="checkbox-container-fix">
+                            <Input
+                                id="disponiblePlato"
+                                label="Disponible para el público"
+                                type="checkbox"
+                                checked={disponible}
+                                onChange={(e) => setDisponible(e.target.checked)}
+                            />
+                        </div>
+                    </div>
+
+                    <Textarea
+                        id="descPlato"
+                        label="Descripción"
+                        rows="3"
+                        placeholder="Breve descripción de los ingredientes o preparación..."
+                        value={descripcion}
+                        onChange={(e) => setDescripcion(e.target.value)}
+                    />
+
+                    <div className="plato-form-actions">
+                        <Button type="submit" variant="primary">
                             {editId ? "Actualizar" : "Crear"}
-                        </button>
-                        <button className="app-btn app-btn-secondary" type="button" onClick={handleCancel}>
+                        </Button>
+                        <Button type="button" variant="secondary" onClick={handleCancel}>
                             {editId ? "Cancelar" : "Limpiar"}
-                        </button>
+                        </Button>
                     </div>
                 </form>
+            </Card>
+
+            <div className="plato-search-container">
+                <SearchBar
+                    value={searchTerm}
+                    onChange={setSearchTerm}
+                    placeholder="Buscar platos por nombre, descripción o categoría..."
+                />
             </div>
 
-            <div className="app-table-container">
-                <table className="app-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Categoría</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
+            <Table headers={["Nombre", "Descripción", "Precio", "Categoría", "Estado", "Acciones"]}>
+                {filteredPlatos.length > 0 ? (
+                    filteredPlatos.map((plato) => (
+                        <tr key={plato.id}>
+                            <td><strong>{plato.nombre}</strong></td>
+                            <td>{plato.descripcion}</td>
+                            <td>${plato.precio}</td>
+                            <td>{plato.nombreCategoria}</td>
+                            <td>
+                                <Badge type={plato.disponible ? "success" : "danger"}>
+                                    {plato.disponible ? "Disponible" : "Agotado"}
+                                </Badge>
+                            </td>
+                            <td>
+                                <div className="plato-table-actions">
+                                    <Button
+                                        variant="secondary"
+                                        style={{ padding: "6px 12px", fontSize: "13px" }}
+                                        onClick={() => handleEdit(plato)}
+                                    >
+                                        Editar
+                                    </Button>
+                                    <Button
+                                        variant="danger"
+                                        style={{ padding: "6px 12px", fontSize: "13px" }}
+                                        onClick={() => handleDelete(plato.id)}
+                                    >
+                                        Eliminar
+                                    </Button>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        {platos && platos.length > 0 ? (
-                            platos.map((plato) => (
-                                <tr key={plato.id}>
-                                    <td><strong>{plato.nombre}</strong></td>
-                                    <td>{plato.descripcion}</td>
-                                    <td>${plato.precio}</td>
-                                    <td>{plato.nombreCategoria}</td>
-                                    <td>
-                                        <span className={`app-badge ${plato.disponible ? 'app-badge-success' : 'app-badge-danger'}`}>
-                                            {plato.disponible ? "Disponible" : "Agotado"}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div style={{ display: "flex", gap: "8px" }}>
-                                            <button
-                                                className="app-btn app-btn-secondary"
-                                                style={{ padding: "6px 12px", fontSize: "13px" }}
-                                                onClick={() => handleEdit(plato)}
-                                            >
-                                                Editar
-                                            </button>
-                                            <button
-                                                className="app-btn app-btn-danger"
-                                                style={{ padding: "6px 12px", fontSize: "13px" }}
-                                                onClick={() => handleDelete(plato.id)}
-                                            >
-                                                Eliminar
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan="6" style={{ textAlign: "center" }}>No hay platos registrados</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan="6" style={{ textAlign: "center" }}>
+                            {platos.length === 0 ? "No hay platos registrados" : "No se encontraron platos coincidentes"}
+                        </td>
+                    </tr>
+                )}
+            </Table>
         </div>
     );
 }

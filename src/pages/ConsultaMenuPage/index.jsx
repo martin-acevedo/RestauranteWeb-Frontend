@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { findDisponiblesPlatosApi } from "../../api/platoApi";
 import { findAllCategoryApi } from "../../api/categoriaApi";
 import { AuthContext } from "../../store/auth-context";
+import { PageHeader, Badge, Button, Card, SearchBar } from "../../components";
+import "./ConsultaMenuPage.css";
 
 function ConsultaMenuPage() {
     const navigate = useNavigate();
@@ -11,6 +13,7 @@ function ConsultaMenuPage() {
     const [categories, setCategories] = useState([]);
     const [platos, setPlatos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchTerm, setSearchTerm] = useState("");
 
     async function loadMenu() {
         setLoading(true);
@@ -32,23 +35,35 @@ function ConsultaMenuPage() {
         }
     }, [token]);
 
-    // Group available plates by category ID
+    // Filter plates based on search term
+    const filteredPlatos = platos.filter((plato) =>
+        plato.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (plato.descripcion && plato.descripcion.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    // Group filtered plates by category ID
     const getPlatosByCategory = (categoryId) => {
-        return platos.filter(p => p.idCategoria === categoryId);
+        return filteredPlatos.filter(p => p.idCategoria === categoryId);
     };
 
     return (
         <div className="app-container">
-            <div className="app-header">
-                <div>
-                    <h2 className="app-title" style={{ background: "linear-gradient(to right, #10b981, #3b82f6)" }}>
-                        Menú del Día (Disponible)
-                    </h2>
-                    <p style={{ fontSize: "14px", marginTop: "4px" }}>Consulta rápida de platos activos para atención</p>
-                </div>
-                <button className="app-btn app-btn-secondary" onClick={() => navigate('/menu', { replace: true })}>
-                    Volver al Menú
-                </button>
+            <PageHeader
+                title="Menú del Día (Disponible)"
+                subtitle="Consulta rápida de platos activos para atención"
+                actions={
+                    <Button variant="secondary" onClick={() => navigate('/menu', { replace: true })}>
+                        Volver al Menú
+                    </Button>
+                }
+            />
+
+            <div className="consulta-search-container">
+                <SearchBar
+                    value={searchTerm}
+                    onChange={setSearchTerm}
+                    placeholder="Buscar platos por nombre o descripción..."
+                />
             </div>
 
             {loading ? (
@@ -58,7 +73,7 @@ function ConsultaMenuPage() {
                     {categories && categories.length > 0 ? (
                         categories.map((category) => {
                             const categoryPlatos = getPlatosByCategory(category.id);
-                            if (categoryPlatos.length === 0) return null; // Hide categories without available plates
+                            if (categoryPlatos.length === 0) return null; // Hide categories without matching plates
 
                             return (
                                 <div key={category.id} className="menu-group">
@@ -74,7 +89,7 @@ function ConsultaMenuPage() {
                                                     <p className="menu-item-desc">{plato.descripcion}</p>
                                                 </div>
                                                 <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                                                    <span className="app-badge app-badge-success">Disponible</span>
+                                                    <Badge type="success">Disponible</Badge>
                                                 </div>
                                             </div>
                                         ))}
@@ -86,11 +101,11 @@ function ConsultaMenuPage() {
                         <div style={{ textAlign: "center", padding: "40px" }}>No hay categorías configuradas en el sistema.</div>
                     )}
 
-                    {!loading && platos.length === 0 && (
-                        <div className="app-card" style={{ textAlign: "center", padding: "40px" }}>
+                    {!loading && filteredPlatos.length === 0 && (
+                        <Card style={{ textAlign: "center", padding: "40px" }}>
                             <h3>Menú Vacío</h3>
-                            <p>Actualmente no hay ningún plato marcado como disponible en el sistema.</p>
-                        </div>
+                            <p>No se encontraron platos que coincidan con la búsqueda o no hay platos marcados como disponibles en el sistema.</p>
+                        </Card>
                     )}
                 </div>
             )}

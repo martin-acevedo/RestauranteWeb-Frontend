@@ -1,0 +1,66 @@
+.menu-group {
+  margin-bottom: 30px;
+}
+
+.menu-group-title {
+  font-size: 20px;
+  color: var(--accent);
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.menu-item-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.menu-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: rgba(0, 0, 0, 0.1) 0 8px 16px -2px;
+}
+
+.menu-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.menu-item-name {
+  font-weight: 600;
+  color: var(--text-h);
+  font-size: 16px;
+}
+
+.menu-item-price {
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 16px;
+}
+
+.menu-item-desc {
+  font-size: 14px;
+  color: var(--text);
+  margin-bottom: 12px;
+  text-align: left;
+}
+
+.consulta-search-container {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: flex-start;
+}

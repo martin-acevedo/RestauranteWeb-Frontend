@@ -2,54 +2,157 @@ import { useContext, useState } from "react";
 import { createApi, loginApi } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../store/auth-context";
+import { Button, Input, Card, Alert } from "../../components";
+import "./LoginPage.css";
 
-function LoginPage(){
+function LoginPage() {
     const [rut, setRut] = useState('');
-    const [password, setPassword] = useState('')
-    const [name, setName] = useState('')
+    const [password, setPassword] = useState('');
+    const [name, setName] = useState('');
+    const [isLogin, setIsLogin] = useState(true);
+    const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
+    
     const navigate = useNavigate();
-    const {saveToken} = useContext(AuthContext)
+    const { saveToken } = useContext(AuthContext);
 
-    const loginAction = async()=>{
-        console.log('login')
-        const resp = await loginApi({rut:rut, password:password})
-        console.log(resp)
-        if(resp?.token){
-            await saveToken(resp.token)
-            navigate('/menu', {replace:true})
-        }else if(resp.message){
-            alert(resp.message)
+    const handleTabChange = (loginTab) => {
+        setIsLogin(loginTab);
+        setError('');
+        setSuccess('');
+        setRut('');
+        setPassword('');
+        setName('');
+    };
+
+    const loginAction = async (e) => {
+        if (e) e.preventDefault();
+        setError('');
+        setSuccess('');
+
+        if (!rut.trim() || !password.trim()) {
+            setError('Por favor complete todos los campos');
+            return;
         }
-        console.log(resp)
-    }
-const createAction = async()=>{
-        console.log('login')
-        const resp = await createApi({rut:rut, password:password, name:name, idRol:1})
-        console.log(resp)
-        if(resp?.token){
-            await saveToken(resp.token)
-            navigate('/menu', {replace:true})
-        }else if(resp.message){
-            alert(resp.message)
+
+        const resp = await loginApi({ rut: rut.trim(), password: password.trim() });
+        if (resp?.token) {
+            await saveToken(resp.token);
+            navigate('/menu', { replace: true });
+        } else {
+            setError(resp?.message || 'Error de credenciales, intente nuevamente');
         }
-        console.log(resp)
-    }
+    };
 
+    const createAction = async (e) => {
+        if (e) e.preventDefault();
+        setError('');
+        setSuccess('');
 
-    return <>
-        <h3>Login</h3>
-        <input type="text" onChange={(e)=> setRut(e.target.value)} />
-        <input type="password" onChange={(e)=> setPassword(e.target.value)} />
-        <button onClick={loginAction}>login</button>
+        if (!rut.trim() || !password.trim() || !name.trim()) {
+            setError('Por favor complete todos los campos');
+            return;
+        }
 
-        <hr />
-        <h3>Login</h3>
-        <input type="text" onChange={(e)=> setRut(e.target.value)} />
-        <input type="password" onChange={(e)=> setPassword(e.target.value)} />
-        <input type="text" onChange={(e)=> setName(e.target.value)} />
-        <button onClick={createAction}>crear</button>
+        const resp = await createApi({ rut: rut.trim(), password: password.trim(), name: name.trim(), idRol: 1 });
+        if (resp?.token) {
+            setSuccess('Usuario creado exitosamente. Iniciando sesión...');
+            setTimeout(async () => {
+                await saveToken(resp.token);
+                navigate('/menu', { replace: true });
+            }, 1500);
+        } else {
+            setError(resp?.message || 'Error al crear la cuenta. Intente nuevamente');
+        }
+    };
 
-    </>
+    return (
+        <div className="login-page-container">
+            <Card className="login-card">
+                <div className="login-logo">RestauranteWeb</div>
+                <p className="login-subtitle">Sistema de Gestión e Información</p>
+
+                <div className="login-toggle-container">
+                    <button
+                        type="button"
+                        className={`login-toggle-btn ${isLogin ? 'active' : ''}`}
+                        onClick={() => handleTabChange(true)}
+                    >
+                        Ingresar
+                    </button>
+                    <button
+                        type="button"
+                        className={`login-toggle-btn ${!isLogin ? 'active' : ''}`}
+                        onClick={() => handleTabChange(false)}
+                    >
+                        Registrarse
+                    </button>
+                </div>
+
+                <Alert type="danger" message={error} />
+                <Alert type="success" message={success} />
+
+                {isLogin ? (
+                    <form onSubmit={loginAction} className="login-form">
+                        <Input
+                            id="rut-login"
+                            label="RUT"
+                            type="text"
+                            placeholder="Ej: 12345678-9"
+                            value={rut}
+                            onChange={(e) => setRut(e.target.value)}
+                            required
+                        />
+                        <Input
+                            id="password-login"
+                            label="Contraseña"
+                            type="password"
+                            placeholder="Ingrese su contraseña"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <Button type="submit" className="login-btn-submit" variant="primary">
+                            Iniciar Sesión
+                        </Button>
+                    </form>
+                ) : (
+                    <form onSubmit={createAction} className="login-form">
+                        <Input
+                            id="name-register"
+                            label="Nombre Completo"
+                            type="text"
+                            placeholder="Ej: Juan Pérez"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                        <Input
+                            id="rut-register"
+                            label="RUT"
+                            type="text"
+                            placeholder="Ej: 12345678-9"
+                            value={rut}
+                            onChange={(e) => setRut(e.target.value)}
+                            required
+                        />
+                        <Input
+                            id="password-register"
+                            label="Contraseña"
+                            type="password"
+                            placeholder="Cree una contraseña"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <Button type="submit" className="login-btn-submit" variant="success">
+                            Crear Cuenta
+                        </Button>
+                    </form>
+                )}
+            </Card>
+        </div>
+    );
 }
 
 export default LoginPage;

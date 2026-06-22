@@ -1,0 +1,39 @@
+.app-table-container {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.app-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.app-table th, .app-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-size: 15px;
+}
+
+.app-table th {
+  background: var(--code-bg);
+  color: var(--text-h);
+  font-weight: 600;
+}
+
+.app-table tr {
+  transition: background-color 0.2s ease;
+}
+
+.app-table tr:hover {
+  background: var(--accent-bg);
+}
+
+.app-table tr:last-child td {
+  border-bottom: none;
+}

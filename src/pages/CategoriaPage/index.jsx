@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { findAllCategoryApi, saveCategoryApi, editCategoryApi, deleteCategoryApi } from "../../api/categoriaApi";
 import { AuthContext } from "../../store/auth-context";
 import { jwtDecode } from "jwt-decode";
+import { PageHeader, Alert, Card, Input, Button, Table, SearchBar } from "../../components";
+import "./CategoriaPage.css";
 
 function CategoriaPage() {
     const navigate = useNavigate();
@@ -12,6 +14,7 @@ function CategoriaPage() {
     const [editId, setEditId] = useState(null);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
 
     // Decode role
     const decoded = token ? jwtDecode(token) : null;
@@ -88,92 +91,95 @@ function CategoriaPage() {
         setSuccess("");
     };
 
+    // Filter categories by term
+    const filteredCategories = categories.filter((cat) =>
+        cat.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        cat.id.toString().includes(searchTerm)
+    );
+
     return (
         <div className="app-container">
-            <div className="app-header">
-                <h2 className="app-title">Categorías del Menú</h2>
-                <button className="app-btn app-btn-secondary" onClick={() => navigate('/menu', { replace: true })}>
-                    Volver al Menú
-                </button>
-            </div>
+            <PageHeader
+                title="Categorías del Menú"
+                actions={
+                    <Button variant="secondary" onClick={() => navigate('/menu', { replace: true })}>
+                        Volver al Menú
+                    </Button>
+                }
+            />
 
-            {error && <div className="app-badge app-badge-danger" style={{ marginBottom: "16px", display: "block" }}>{error}</div>}
-            {success && <div className="app-badge app-badge-success" style={{ marginBottom: "16px", display: "block" }}>{success}</div>}
+            <Alert type="danger" message={error} />
+            <Alert type="success" message={success} />
 
             {isAdmin && (
-                <div className="app-card">
-                    <h3>{editId ? "Editar Categoría" : "Nueva Categoría"}</h3>
+                <Card title={editId ? "Editar Categoría" : "Nueva Categoría"}>
                     <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label className="form-label" htmlFor="nombreCategoria">Nombre de la Categoría</label>
-                            <input
-                                id="nombreCategoria"
-                                className="form-control"
-                                type="text"
-                                placeholder="Ej: Entradas, Fondos, Postres, Bebestibles"
-                                value={nombre}
-                                onChange={(e) => setNombre(e.target.value)}
-                            />
-                        </div>
-                        <div style={{ display: "flex", gap: "10px" }}>
-                            <button className="app-btn app-btn-primary" type="submit">
+                        <Input
+                            id="nombreCategoria"
+                            label="Nombre de la Categoría"
+                            type="text"
+                            placeholder="Ej: Entradas, Fondos, Postres, Bebestibles"
+                            value={nombre}
+                            onChange={(e) => setNombre(e.target.value)}
+                        />
+                        <div className="category-form-actions">
+                            <Button type="submit" variant="primary">
                                 {editId ? "Actualizar" : "Crear"}
-                            </button>
+                            </Button>
                             {editId && (
-                                <button className="app-btn app-btn-secondary" type="button" onClick={handleCancel}>
+                                <Button type="button" variant="secondary" onClick={handleCancel}>
                                     Cancelar
-                                </button>
+                                </Button>
                             )}
                         </div>
                     </form>
-                </div>
+                </Card>
             )}
 
-            <div className="app-table-container">
-                <table className="app-table">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre</th>
-                            {isAdmin && <th>Acciones</th>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {categories && categories.length > 0 ? (
-                            categories.map((cat) => (
-                                <tr key={cat.id}>
-                                    <td>{cat.id}</td>
-                                    <td>{cat.nombre}</td>
-                                    {isAdmin && (
-                                        <td>
-                                            <div style={{ display: "flex", gap: "8px" }}>
-                                                <button
-                                                    className="app-btn app-btn-secondary"
-                                                    style={{ padding: "6px 12px", fontSize: "13px" }}
-                                                    onClick={() => handleEdit(cat)}
-                                                >
-                                                    Editar
-                                                </button>
-                                                <button
-                                                    className="app-btn app-btn-danger"
-                                                    style={{ padding: "6px 12px", fontSize: "13px" }}
-                                                    onClick={() => handleDelete(cat.id)}
-                                                >
-                                                    Eliminar
-                                                </button>
-                                            </div>
-                                        </td>
-                                    )}
-                                </tr>
-                            ))
-                        ) : (
-                            <tr>
-                                <td colSpan={isAdmin ? 3 : 2} style={{ textAlign: "center" }}>No hay categorías disponibles</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+            <div className="category-search-container">
+                <SearchBar
+                    value={searchTerm}
+                    onChange={setSearchTerm}
+                    placeholder="Buscar categorías por nombre o ID..."
+                />
             </div>
+
+            <Table headers={["ID", "Nombre", isAdmin ? "Acciones" : null].filter(Boolean)}>
+                {filteredCategories.length > 0 ? (
+                    filteredCategories.map((cat) => (
+                        <tr key={cat.id}>
+                            <td>{cat.id}</td>
+                            <td>{cat.nombre}</td>
+                            {isAdmin && (
+                                <td>
+                                    <div className="category-table-actions">
+                                        <Button
+                                            variant="secondary"
+                                            style={{ padding: "6px 12px", fontSize: "13px" }}
+                                            onClick={() => handleEdit(cat)}
+                                        >
+                                            Editar
+                                        </Button>
+                                        <Button
+                                            variant="danger"
+                                            style={{ padding: "6px 12px", fontSize: "13px" }}
+                                            onClick={() => handleDelete(cat.id)}
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    </div>
+                                </td>
+                            )}
+                        </tr>
+                    ))
+                ) : (
+                    <tr>
+                        <td colSpan={isAdmin ? 3 : 2} style={{ textAlign: "center" }}>
+                            {categories.length === 0 ? "No hay categorías disponibles" : "No se encontraron categorías coincidentes"}
+                        </td>
+                    </tr>
+                )}
+            </Table>
         </div>
     );
 }
