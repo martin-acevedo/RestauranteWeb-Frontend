@@ -39,6 +39,9 @@ function MenuPage() {
                             <Button variant="primary" onClick={() => navigate('/mesas')}>
                                 Gestionar Mesas del Local
                             </Button>
+                            <Button variant="primary" onClick={() => navigate('/pedidos')}>
+                                Gestionar Pedidos
+                            </Button>
                             <Button variant="secondary" onClick={() => navigate('/consulta-menu')}>
                                 Vista Consulta de Menú
                             </Button>
@@ -47,6 +50,9 @@ function MenuPage() {
                         <>
                             <Button variant="primary" onClick={() => navigate('/consulta-menu')}>
                                 Consultar Menú Disponible
+                            </Button>
+                            <Button variant="primary" onClick={() => navigate('/pedidos')}>
+                                Tomar Pedidos
                             </Button>
                             <Button variant="secondary" onClick={() => navigate('/categoria')}>
                                 Consultar Categorías
