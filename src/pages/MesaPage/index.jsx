@@ -130,11 +130,6 @@ function MesaPage() {
         <div className="app-container">
             <PageHeader
                 title="Gestión de Mesas"
-                actions={
-                    <Button variant="secondary" onClick={() => navigate('/menu', { replace: true })}>
-                        Volver al Menú
-                    </Button>
-                }
             />
 
             <Alert type="danger" message={error} />

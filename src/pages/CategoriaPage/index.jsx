@@ -101,11 +101,6 @@ function CategoriaPage() {
         <div className="app-container">
             <PageHeader
                 title="Categorías del Menú"
-                actions={
-                    <Button variant="secondary" onClick={() => navigate('/menu', { replace: true })}>
-                        Volver al Menú
-                    </Button>
-                }
             />
 
             <Alert type="danger" message={error} />

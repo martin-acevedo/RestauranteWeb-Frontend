@@ -144,8 +144,8 @@ code {
 /* Global Structural Layout Helpers */
 .app-container {
   max-width: 100%;
-  margin: 0 auto;
-  padding: 24px;
+  margin: 0;
+  padding: 0;
   text-align: left;
 }
 

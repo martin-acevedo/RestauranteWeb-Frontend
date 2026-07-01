@@ -4,8 +4,8 @@
   border-radius: 14px;
   background: var(--bg-surface, var(--bg));
   box-shadow: var(--shadow);
-  margin-top: 12px;
-  margin-bottom: 20px;
+  margin-top: 8px;
+  margin-bottom: 14px;
 }
 
 .app-table {
@@ -15,7 +15,7 @@
 }
 
 .app-table th, .app-table td {
-  padding: 12px 18px;
+  padding: 10px 16px;
   border-bottom: 1px solid var(--border);
   font-size: 14px;
 }
@@ -24,9 +24,10 @@
   background: var(--code-bg);
   color: var(--text-h);
   font-weight: 600;
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .app-table tr {
@@ -39,4 +40,9 @@
 
 .app-table tr:last-child td {
   border-bottom: none;
+}
+
+/* Action button cells */
+.app-table td:last-child {
+  white-space: nowrap;
 }

@@ -2,9 +2,9 @@
   background: var(--bg-surface, var(--bg));
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: 22px;
+  padding: 16px 18px;
   box-shadow: var(--shadow);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -14,11 +14,28 @@
 
 .app-card-title {
   margin-top: 0;
-  margin-bottom: 18px;
-  font-size: 1.1rem;
+  margin-bottom: 12px;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text-h);
   border-bottom: 1px solid var(--border);
-  padding-bottom: 10px;
+  padding-bottom: 8px;
   letter-spacing: -0.01em;
+}
+
+/* When a table is inside a card, remove extra margins */
+.app-card .app-table-container {
+  margin-top: 0;
+  margin-bottom: -16px;
+  margin-left: -18px;
+  margin-right: -18px;
+  width: calc(100% + 36px);
+  border: none;
+  border-radius: 0 0 14px 14px;
+  box-shadow: none;
+}
+
+/* When card only has a table (title + table), tighten title */
+.app-card .app-table-container:last-child {
+  border-radius: 0 0 13px 13px;
 }

@@ -154,14 +154,6 @@ function PedidoPage() {
 
             <PageHeader
                 title="Gestión de Pedidos"
-                actions={
-                    <Button
-                        variant="secondary"
-                        onClick={() => navigate('/menu')}
-                    >
-                        Volver
-                    </Button>
-                }
             />
 
             <Alert type="danger" message={error} />

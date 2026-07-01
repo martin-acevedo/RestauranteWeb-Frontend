@@ -51,11 +51,6 @@ function ConsultaMenuPage() {
             <PageHeader
                 title="Menú del Día (Disponible)"
                 subtitle="Consulta rápida de platos activos para atención"
-                actions={
-                    <Button variant="secondary" onClick={() => navigate('/menu', { replace: true })}>
-                        Volver al Menú
-                    </Button>
-                }
             />
 
             <div className="consulta-search-container">

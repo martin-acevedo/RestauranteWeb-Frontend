@@ -141,11 +141,6 @@ function PlatoPage() {
         <div className="app-container">
             <PageHeader
                 title="Gestión de Platos"
-                actions={
-                    <Button variant="secondary" onClick={() => navigate('/menu', { replace: true })}>
-                        Volver al Menú
-                    </Button>
-                }
             />
 
             <Alert type="danger" message={error} />

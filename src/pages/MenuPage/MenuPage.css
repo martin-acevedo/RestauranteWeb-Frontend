@@ -1,16 +1,16 @@
 .welcome-container {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
 }
 
 .welcome-hero {
     background: linear-gradient(135deg, #1a1612 0%, #2c2318 60%, #3a2e1f 100%);
     border-radius: 18px;
-    padding: 2.5rem 2rem;
+    padding: 2rem 2rem 1.8rem;
     color: #ffffff;
     position: relative;
-    overflow: hidden;
+    overflow: clip;
     box-shadow: 0 10px 30px -5px rgba(44, 35, 24, 0.3);
 }
 
