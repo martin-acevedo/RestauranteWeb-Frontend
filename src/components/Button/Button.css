@@ -1,8 +1,8 @@
 .app-btn {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 9px 18px;
+  border-radius: 10px;
   border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -12,34 +12,36 @@
   gap: 8px;
   text-decoration: none;
   font-family: inherit;
+  letter-spacing: -0.01em;
 }
 
 .app-btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
   transform: none !important;
 }
 
 .app-btn-primary {
-  background: var(--accent);
+  background: linear-gradient(135deg, #c4841d, #d4a853);
   color: #fff;
+  box-shadow: 0 2px 8px rgba(196, 132, 29, 0.2);
 }
 
 .app-btn-primary:hover:not(:disabled) {
-  background: var(--accent-border);
+  background: linear-gradient(135deg, #b0740f, #c4841d);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(170, 59, 255, 0.25);
+  box-shadow: 0 6px 16px rgba(196, 132, 29, 0.3);
 }
 
 .app-btn-secondary {
-  background: var(--code-bg);
+  background: var(--bg-surface, var(--bg));
   color: var(--text-h);
   border-color: var(--border);
 }
 
 .app-btn-secondary:hover:not(:disabled) {
-  background: var(--border);
-  transform: translateY(-2px);
+  background: var(--code-bg);
+  transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
@@ -55,12 +57,12 @@
 }
 
 .app-btn-success {
-  background: #10b981;
+  background: linear-gradient(135deg, #0d9668, #10b981);
   color: #fff;
 }
 
 .app-btn-success:hover:not(:disabled) {
-  background: #059669;
+  background: linear-gradient(135deg, #0a7d55, #0d9668);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
 }

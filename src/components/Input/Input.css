@@ -1,28 +1,29 @@
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: 6px;
+  margin-bottom: 14px;
 }
 
 .form-label {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--text-h);
   text-align: left;
 }
 
 .form-control {
-  font-size: 15px;
-  padding: 10px 14px;
-  border-radius: 8px;
+  font-size: 14px;
+  padding: 9px 12px;
+  border-radius: 10px;
   border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text-h);
   outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
+  transition: border-color 0.2s, box-shadow 0.2s;
   width: 100%;
   box-sizing: border-box;
+  font-family: inherit;
 }
 
 .form-control:focus {
@@ -34,14 +35,14 @@
 .form-group-checkbox {
   display: flex;
   align-items: center;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .form-checkbox-label {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: var(--text-h);
   -webkit-user-select: none;

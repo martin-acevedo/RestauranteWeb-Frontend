@@ -35,3 +35,18 @@ export async function createApi(payload){
         return null;
     }
 }
+
+export async function customFetch(url, options) {
+    try {
+        const res = await fetch(url, options);
+        if (res && res.status === 401) {
+            localStorage.removeItem("token");
+            window.location.href = "/";
+            return null;
+        }
+        return res;
+    } catch (error) {
+        console.error("Fetch API error:", error);
+        throw error;
+    }
+}

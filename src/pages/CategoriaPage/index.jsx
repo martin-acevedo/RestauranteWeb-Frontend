@@ -19,7 +19,7 @@ function CategoriaPage() {
     // Decode role
     const decoded = token ? jwtDecode(token) : null;
     const userRole = decoded?.sub.split("#")[2] || "";
-    const isAdmin = userRole === "ROLE_Administrador";
+    const isAdmin = userRole === "ROLE_ADMIN";
 
     async function loadCategories() {
         const data = await findAllCategoryApi(token);
@@ -53,7 +53,7 @@ function CategoriaPage() {
             res = await saveCategoryApi(payload, token);
         }
 
-        if (res && !res.status) {
+        if (res && !res.code && !res.status) {
             setSuccess(editId ? "Categoría actualizada con éxito" : "Categoría creada con éxito");
             setNombre("");
             setEditId(null);

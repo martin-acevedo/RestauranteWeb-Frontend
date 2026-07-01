@@ -9,3 +9,4 @@ export { default as Alert } from './Alert';
 export { default as Badge } from './Badge';
 export { default as SearchBar } from './SearchBar';
 export { default as ProtectedRoute } from './ProtectedRoute';
+export { default as MainLayout } from './MainLayout';

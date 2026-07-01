@@ -1,8 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { createApi, loginApi } from "../../api";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../store/auth-context";
-import { Button, Input, Card, Alert } from "../../components";
+import { Button, Input, Card, Alert, Select } from "../../components";
 import "./LoginPage.css";
 
 function LoginPage() {
@@ -12,9 +12,16 @@ function LoginPage() {
     const [isLogin, setIsLogin] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [idRol, setIdRol] = useState("1");
     
     const navigate = useNavigate();
-    const { saveToken } = useContext(AuthContext);
+    const { token, saveToken } = useContext(AuthContext);
+
+    useEffect(() => {
+        if (token) {
+            navigate('/menu', { replace: true });
+        }
+    }, [token, navigate]);
 
     const handleTabChange = (loginTab) => {
         setIsLogin(loginTab);
@@ -23,6 +30,7 @@ function LoginPage() {
         setRut('');
         setPassword('');
         setName('');
+        setIdRol("1");
     };
 
     const loginAction = async (e) => {
@@ -54,13 +62,18 @@ function LoginPage() {
             return;
         }
 
-        const resp = await createApi({ rut: rut.trim(), password: password.trim(), name: name.trim(), idRol: 1 });
-        if (resp?.token) {
-            setSuccess('Usuario creado exitosamente. Iniciando sesión...');
-            setTimeout(async () => {
-                await saveToken(resp.token);
-                navigate('/menu', { replace: true });
-            }, 1500);
+        const resp = await createApi({ rut: rut.trim(), password: password.trim(), name: name.trim(), idRol: parseInt(idRol) });
+        if (resp && !resp.code && !resp.status) {
+            const loginResp = await loginApi({ rut: rut.trim(), password: password.trim() });
+            if (loginResp?.token) {
+                setSuccess('Usuario creado exitosamente. Iniciando sesión...');
+                setTimeout(async () => {
+                    await saveToken(loginResp.token);
+                    navigate('/menu', { replace: true });
+                }, 1500);
+            } else {
+                setError('Usuario creado, pero no se pudo iniciar sesión automáticamente. Ingrese sus credenciales.');
+            }
         } else {
             setError(resp?.message || 'Error al crear la cuenta. Intente nuevamente');
         }
@@ -144,6 +157,16 @@ function LoginPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                        />
+                        <Select
+                            id="role-register"
+                            label="Rol de Usuario"
+                            value={idRol}
+                            onChange={(e) => setIdRol(e.target.value)}
+                            options={[
+                                { value: "1", label: "Administrador" },
+                                { value: "2", label: "Mesero" }
+                            ]}
                         />
                         <Button type="submit" className="login-btn-submit" variant="success">
                             Crear Cuenta

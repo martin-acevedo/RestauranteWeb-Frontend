@@ -1,12 +1,15 @@
+import { customFetch } from "./index";
+
 export async function findAllCategoryApi(token){
     try{
-        const res = await fetch(`http://localhost:8090/categoria`,{
+        const res = await customFetch(`http://localhost:8090/categoria`,{
             method:"GET",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         const data = await res.json();
         return data;
     }catch(error){
@@ -19,7 +22,7 @@ export async function findAllCategoryApi(token){
 
 export async function saveCategoryApi(json, token){
     try{
-        const res = await fetch(`http://localhost:8090/categoria`,{
+        const res = await customFetch(`http://localhost:8090/categoria`,{
             method:"POST",
             body:JSON.stringify(json),
             headers:{
@@ -27,6 +30,7 @@ export async function saveCategoryApi(json, token){
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         const data = await res.json();
         return data;
     }catch(error){
@@ -39,7 +43,7 @@ export async function saveCategoryApi(json, token){
 
 export async function editCategoryApi(id, json, token){
     try{
-        const res = await fetch(`http://localhost:8090/categoria/${id}`,{
+        const res = await customFetch(`http://localhost:8090/categoria/${id}`,{
             method:"PUT",
             body:JSON.stringify(json),
             headers:{
@@ -47,6 +51,7 @@ export async function editCategoryApi(id, json, token){
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         const data = await res.json();
         return data;
     }catch(error){
@@ -59,13 +64,14 @@ export async function editCategoryApi(id, json, token){
 
 export async function deleteCategoryApi(id, token){
     try{
-        const res = await fetch(`http://localhost:8090/categoria/${id}`,{
+        const res = await customFetch(`http://localhost:8090/categoria/${id}`,{
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         if (res.ok) return true;
         const data = await res.json();
         return data;

@@ -1,12 +1,15 @@
+import { customFetch } from "./index";
+
 export async function findAllPedidosApi(token) {
     try {
-        const res = await fetch(`http://localhost:8090/pedido`, {
+        const res = await customFetch(`http://localhost:8090/pedido`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         });
+        if (!res) return null;
         return await res.json();
     } catch (error) {
         console.log(error);
@@ -16,13 +19,14 @@ export async function findAllPedidosApi(token) {
 
 export async function findPedidosActivosApi(token) {
     try {
-        const res = await fetch(`http://localhost:8090/pedido/activos`, {
+        const res = await customFetch(`http://localhost:8090/pedido/activos`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         });
+        if (!res) return null;
         return await res.json();
     } catch (error) {
         console.log(error);
@@ -32,7 +36,7 @@ export async function findPedidosActivosApi(token) {
 
 export async function savePedidoApi(json, token) {
     try {
-        const res = await fetch(`http://localhost:8090/pedido`, {
+        const res = await customFetch(`http://localhost:8090/pedido`, {
             method: "POST",
             body: JSON.stringify(json),
             headers: {
@@ -40,6 +44,7 @@ export async function savePedidoApi(json, token) {
                 "Authorization": `Bearer ${token}`
             }
         });
+        if (!res) return null;
         return await res.json();
     } catch (error) {
         console.log(error);
@@ -49,7 +54,7 @@ export async function savePedidoApi(json, token) {
 
 export async function agregarDetallePedidoApi(idPedido, json, token) {
     try {
-        const res = await fetch(`http://localhost:8090/pedido/${idPedido}/detalle`, {
+        const res = await customFetch(`http://localhost:8090/pedido/${idPedido}/detalle`, {
             method: "POST",
             body: JSON.stringify(json),
             headers: {
@@ -57,6 +62,7 @@ export async function agregarDetallePedidoApi(idPedido, json, token) {
                 "Authorization": `Bearer ${token}`
             }
         });
+        if (!res) return null;
         return await res.json();
     } catch (error) {
         console.log(error);
@@ -66,13 +72,14 @@ export async function agregarDetallePedidoApi(idPedido, json, token) {
 
 export async function cerrarPedidoApi(idPedido, token) {
     try {
-        const res = await fetch(`http://localhost:8090/pedido/${idPedido}/cerrar`, {
+        const res = await customFetch(`http://localhost:8090/pedido/${idPedido}/cerrar`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         });
+        if (!res) return null;
         return await res.json();
     } catch (error) {
         console.log(error);
@@ -82,13 +89,14 @@ export async function cerrarPedidoApi(idPedido, token) {
 
 export async function findDetallePedidoApi(idPedido, token) {
     try {
-        const res = await fetch(`http://localhost:8090/pedido/${idPedido}/detalle`, {
+        const res = await customFetch(`http://localhost:8090/pedido/${idPedido}/detalle`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         });
+        if (!res) return null;
         return await res.json();
     } catch (error) {
         console.log(error);

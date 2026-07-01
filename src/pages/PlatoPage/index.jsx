@@ -79,7 +79,7 @@ function PlatoPage() {
             res = await savePlatoApi(payload, token);
         }
 
-        if (res && !res.status) {
+        if (res && !res.code && !res.status) {
             setSuccess(editId ? "Plato actualizado con éxito" : "Plato creado con éxito");
             resetForm();
             loadData();

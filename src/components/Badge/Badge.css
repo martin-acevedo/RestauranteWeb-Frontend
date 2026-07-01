@@ -1,30 +1,45 @@
 .app-badge {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 12px;
+  padding: 3px 8px;
+  border-radius: 6px;
   display: inline-block;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.03em;
   font-family: inherit;
 }
 
 .app-badge-success {
-  background: rgba(16, 185, 129, 0.15);
-  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  color: #0d9668;
 }
 
 .app-badge-danger {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
 }
 
 .app-badge-info {
-  background: rgba(59, 130, 246, 0.15);
-  color: #3b82f6;
+  background: rgba(196, 132, 29, 0.12);
+  color: #c4841d;
 }
 
 .app-badge-warning {
-  background: rgba(245, 158, 11, 0.15);
-  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+}
+
+@media (prefers-color-scheme: dark) {
+  .app-badge-success {
+    color: #34d399;
+  }
+  .app-badge-danger {
+    color: #f87171;
+  }
+  .app-badge-info {
+    color: #d4a853;
+  }
+  .app-badge-warning {
+    color: #fbbf24;
+  }
 }

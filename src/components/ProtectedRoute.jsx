@@ -11,8 +11,22 @@ function ProtectedRoute({ children, allowedRoles }) {
   }
 
   if (allowedRoles) {
-    const decoded = jwtDecode(token);
+    let decoded;
+    try {
+      decoded = jwtDecode(token);
+    } catch (e) {
+      localStorage.removeItem("token");
+      return <Navigate to="/" replace />;
+    }
     const rol = decoded?.sub.split("#")[2];
+
+    const validSystemRoles = ["ROLE_ADMIN", "ROLE_USER"];
+    if (!validSystemRoles.includes(rol)) {
+      localStorage.removeItem("token");
+      // Force reload to clean context state
+      window.location.href = "/";
+      return null;
+    }
 
     if (!allowedRoles.includes(rol)) {
       return <Navigate to="/no-autorizado" replace />;

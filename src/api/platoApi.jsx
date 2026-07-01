@@ -1,12 +1,15 @@
+import { customFetch } from "./index";
+
 export async function findAllPlatosApi(token){
     try{
-        const res = await fetch(`http://localhost:8090/plato`,{
+        const res = await customFetch(`http://localhost:8090/plato`,{
             method:"GET",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         const data = await res.json();
         return data;
     }catch(error){
@@ -19,13 +22,14 @@ export async function findAllPlatosApi(token){
 
 export async function findDisponiblesPlatosApi(token){
     try{
-        const res = await fetch(`http://localhost:8090/plato/disponible`,{
+        const res = await customFetch(`http://localhost:8090/plato/disponible`,{
             method:"GET",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         const data = await res.json();
         return data;
     }catch(error){
@@ -38,7 +42,7 @@ export async function findDisponiblesPlatosApi(token){
 
 export async function savePlatoApi(json, token){
     try{
-        const res = await fetch(`http://localhost:8090/plato`,{
+        const res = await customFetch(`http://localhost:8090/plato`,{
             method:"POST",
             body:JSON.stringify(json),
             headers:{
@@ -46,6 +50,7 @@ export async function savePlatoApi(json, token){
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         const data = await res.json();
         return data;
     }catch(error){
@@ -58,7 +63,7 @@ export async function savePlatoApi(json, token){
 
 export async function editPlatoApi(id, json, token){
     try{
-        const res = await fetch(`http://localhost:8090/plato/${id}`,{
+        const res = await customFetch(`http://localhost:8090/plato/${id}`,{
             method:"PUT",
             body:JSON.stringify(json),
             headers:{
@@ -66,6 +71,7 @@ export async function editPlatoApi(id, json, token){
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         const data = await res.json();
         return data;
     }catch(error){
@@ -78,13 +84,14 @@ export async function editPlatoApi(id, json, token){
 
 export async function deletePlatoApi(id, token){
     try{
-        const res = await fetch(`http://localhost:8090/plato/${id}`,{
+        const res = await customFetch(`http://localhost:8090/plato/${id}`,{
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json",
                 "Authorization":`Bearer ${token}`
             }
         });
+        if (!res) return null;
         if (res.ok) return true;
         const data = await res.json();
         return data;

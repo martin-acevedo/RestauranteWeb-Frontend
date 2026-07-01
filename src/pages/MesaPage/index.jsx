@@ -61,7 +61,7 @@ function MesaPage() {
             res = await saveMesaApi(payload, token);
         }
 
-        if (res && !res.status) {
+        if (res && !res.code && !res.status) {
             setSuccess(editId ? "Mesa actualizada con éxito" : "Mesa creada con éxito");
             resetForm();
             loadMesas();
